@@ -1,16 +1,5 @@
 # Pacote `cmd/all-in-one`
 
-### Install Nats-server
-```
-sudo apt update
-sudo apt install -y wget
-wget https://github.com/nats-io/nats-server/releases/download/v2.9.9/nats-server-v2.9.9-linux-amd64.tar.gz
-tar -xvzf nats-server-v2.9.9-linux-amd64.tar.gz
-sudo mv nats-server-v2.9.9-linux-amd64/nats-server /usr/local/bin/
-nats-server -version
-```
-
-
 Mas por enquanto, aqui vão alguns exemplos: 
 
 ```terminal
