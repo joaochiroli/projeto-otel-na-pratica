@@ -5,8 +5,10 @@ package main
 
 import (
 	"flag"
+	"log"
 	"net"
 	"net/http"
+	"os"
 
 	"github.com/dosedetelemetria/projeto-otel-na-pratica/internal/app"
 	"github.com/dosedetelemetria/projeto-otel-na-pratica/internal/config"
@@ -15,6 +17,9 @@ import (
 )
 
 func main() {
+	// Configurar o logger padrão para escrever no stdout
+	log.SetOutput(os.Stdout)
+	log.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
 
 	// Iniciando o OpenTelemetry
 	telemetry.InitTelemetry()
