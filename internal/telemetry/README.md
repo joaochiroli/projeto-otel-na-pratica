@@ -47,7 +47,7 @@ sudo apt-get install build-essential gcc
 
 # Começando a instrumentação 
 
-## Passo 1
+## Passo 1 - Configurando Trace
 1. O rastreamento é inicializado na função `InitTraces` localizada em `internal/pkg/telemetry/traces.go`. Esta função configura um exportador de rastreamento OTLP e um provedor de rastreamento.
 
 ```
@@ -87,3 +87,14 @@ telemetry.InitTelemetry()
 ```
 
 4. Lembre-se de usar o `go mod tidy` para baixar as dependencias
+
+5. Alterar o arquivo `cmd/internal/users.go` para que as chamadas HTTP do Handler passem pela biblioteca do OpenTelemetry. Isso permite que as requisições HTTP sejam automaticamente instrumentadas para coleta de traces.
+```
+	mux.Handle("GET /users", otelhttp.NewHandler(http.HandlerFunc(a.Handler.List), "GET /users"))
+	mux.Handle("POST /users", otelhttp.NewHandler(http.HandlerFunc(a.Handler.Create), "POST /users"))
+	mux.Handle("GET /users/{id}", otelhttp.NewHandler(http.HandlerFunc(a.Handler.Get), "GET /users/{id}"))
+	mux.Handle("PUT /users/{id}", otelhttp.NewHandler(http.HandlerFunc(a.Handler.Update), "PUT /users/{id}"))
+	mux.Handle("DELETE /users/{id}", otelhttp.NewHandler(http.HandlerFunc(a.Handler.Delete), "DELETE /users/{id}"))
+```
+
+6. Como foi feito anteriormente, é necessário fazer a mesma configuração das chamadas HTTP do Handler para todos os outros endpoints `plan.go`, `subscriptions.go`,`users.go` e `payment.go`

@@ -12,6 +12,7 @@ import (
 	planhttp "github.com/dosedetelemetria/projeto-otel-na-pratica/internal/pkg/handler/http"
 	"github.com/dosedetelemetria/projeto-otel-na-pratica/internal/pkg/store"
 	"github.com/dosedetelemetria/projeto-otel-na-pratica/internal/pkg/store/memory"
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"google.golang.org/grpc"
 )
 
@@ -31,11 +32,11 @@ func NewPlan(*config.Plans) *Plan {
 }
 
 func (a *Plan) RegisterRoutes(mux *http.ServeMux, grpcSrv *grpc.Server) {
-	mux.HandleFunc("GET /plans", a.Handler.List)
-	mux.HandleFunc("POST /plans", a.Handler.Create)
-	mux.HandleFunc("GET /plans/{id}", a.Handler.Get)
-	mux.HandleFunc("PUT /plans/{id}", a.Handler.Update)
-	mux.HandleFunc("DELETE /plans/{id}", a.Handler.Delete)
+	mux.Handle("GET /plans", otelhttp.NewHandler(http.HandlerFunc(a.Handler.List), "GET /plans"))
+	mux.Handle("POST /plans", otelhttp.NewHandler(http.HandlerFunc(a.Handler.Create), "POST /plans"))
+	mux.Handle("GET /plans/{id}", otelhttp.NewHandler(http.HandlerFunc(a.Handler.Get), "GET /plans/{id}"))
+	mux.Handle("PUT /plans/{id}", otelhttp.NewHandler(http.HandlerFunc(a.Handler.Update), "PUT /plans/{id}"))
+	mux.Handle("DELETE /plans/{id}", otelhttp.NewHandler(http.HandlerFunc(a.Handler.Delete), "PUT /plans/{id}"))
 
 	api.RegisterPlanServiceServer(grpcSrv, a.GRPCHandler)
 }
