@@ -12,21 +12,21 @@ import (
 
 	"github.com/dosedetelemetria/projeto-otel-na-pratica/internal/app"
 	"github.com/dosedetelemetria/projeto-otel-na-pratica/internal/config"
-	"github.com/dosedetelemetria/projeto-otel-na-pratica/internal/telemetry"
-	"google.golang.org/grpc"
-	otelConfigFlag := flag.String("otel", "", "path to the config file")
-	configFlag := flag.String("config", "", "path to the config file")
-	flag.Parse()
-
-	closer, err := telemetry.Setup(context.Background(), *otelConfigFlag)
-	if err != nil {
-		fmt.Printf("failed to setup telemetry: %v\n", err)
-	}
-	defer closer(context.Background())
-	c, _ := config.LoadConfig(*configFlag)
-	}
-	defer closer(context.Background())
-	c, _ := config.LoadConfig(*configFlag)
+		"github.com/dosedetelemetria/projeto-otel-na-pratica/internal/telemetry"
+		"google.golang.org/grpc"
+	)
+	
+	func main() {
+		otelConfigFlag := flag.String("otel", "", "path to the config file")
+		configFlag := flag.String("config", "", "path to the config file")
+		flag.Parse()
+	
+		closer, err := telemetry.Setup(context.Background(), *otelConfigFlag)
+		if err != nil {
+			fmt.Printf("failed to setup telemetry: %v\n", err)
+		}
+		defer closer(context.Background())
+		c, _ := config.LoadConfig(*configFlag)
 
 	mux := http.NewServeMux()
 
