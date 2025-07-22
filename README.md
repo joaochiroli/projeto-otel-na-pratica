@@ -117,3 +117,8 @@ func main() {
 	c, _ := config.LoadConfig(*configFlag)
 ```
 3. Para fazer o programa funcionar é necessário executar primeiro `nats-server -D -js` depois baixar o nats cli `go install github.com/nats-io/natscli/nats@latest` so entao depois voce pode executar o `go run ./cmd/all-in-one/`
+4. Se tiver algum problema com o nats talvez seja necessário ajustar sua configuração do go:
+```
+echo 'export PATH=$PATH:~/go/bin' >> ~/.bashrc
+source ~/.bashrc
+```
