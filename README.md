@@ -98,3 +98,22 @@ Quer ajudar a melhorar este projeto? Veja como começar no arquivo [CONTRIBUTING
 ## Licença
 
 Este projeto está licenciado sob a licença Apache v2. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+#  Passo a passo aula de sdk-manual
+
+1. Criar a repositório `/internal/telemetry` e depois criar o arquivo `/internal/telemetry/otel.go`
+2. Ir até o `cmd/main.go` e fazer a chamada para o opentelemetry funcionar, acrescentar o script abaixo no inicio do código:
+```
+func main() {
+	otelconfigFlag := flag.String("otel", "", "path to the config file")
+	configFlag := flag.String("config", "", "path to the config file")
+	flag.Parse()
+
+	closer, err := telemetry.Setup(context.Background(), *otelConfigFlag)
+	if err != nil {
+		panic(err)
+	}
+	defer closer(context.Background())
+	c, _ := config.LoadConfig(*configFlag)
+```
+3. Para fazer o programa funcionar é necessário executar primeiro `nats-server -D -js` depois baixar o nats cli `go install github.com/nats-io/natscli/nats@latest` so entao depois voce pode executar o `go run ./cmd/all-in-one/`

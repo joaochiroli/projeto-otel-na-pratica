@@ -14,9 +14,15 @@ import (
 )
 
 func main() {
+	otelconfigFlag := flag.String("otel", "", "path to the config file")
 	configFlag := flag.String("config", "", "path to the config file")
 	flag.Parse()
 
+	closer, err := telemetry.Setup(context.Background(), *otelConfigFlag)
+	if err != nil {
+		fmt.Printf("failed to setup telemetry: %v\n", err)
+	}
+	defer closer(context.Background())
 	c, _ := config.LoadConfig(*configFlag)
 
 	mux := http.NewServeMux()
