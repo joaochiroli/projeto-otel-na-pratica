@@ -19,15 +19,19 @@ A aplicação não possui nenhuma instrumentação. Nada. Durante a especializa�
 ## Módulos Disponíveis
 
 - **`cmd/users`**:
+
   - **Descrição**: Este módulo contém a aplicação principal para gerenciar usuários. Ele lida com operações como criação, atualização e exclusão de usuários.
 
 - **`cmd/payments`**:
+
   - **Descrição**: Este módulo é responsável pelo processamento de pagamentos. Ele gerencia transações financeiras e integrações com gateways de pagamento. Ao receber uma requisição para um novo pagamento, coloca a requisição em uma fila de mensagens. Uma rotina na mesma aplicação recebe a mensagem e processa o pagamento, armazenando em um banco de dados SQLLite.
 
 - **`cmd/all-in-one`**:
+
   - **Descrição**: Este módulo combina todas as funcionalidades em uma única aplicação. Ele é útil para desenvolvimento e testes locais, permitindo executar todos os serviços em um único processo.
 
 - **`cmd/plans`**:
+
   - **Descrição**: Este módulo gerencia os planos de assinatura disponíveis. Ele lida com a criação, atualização e exclusão de planos. Aceita requisições tanto em HTTP quanto gRPC.
 
 - **`cmd/subscriptions`**:
@@ -69,7 +73,7 @@ server:
 
 ## Como as coisas funcionam
 
-* Os serviços "plans" e "users" não tem dependências com outros serviços. O serviço "subscriptions" precisa fazer conexões com "plans" e "users", enquanto que "payments" faz uma conexão com "subscriptions".
+- Os serviços "plans" e "users" não tem dependências com outros serviços. O serviço "subscriptions" precisa fazer conexões com "plans" e "users", enquanto que "payments" faz uma conexão com "subscriptions".
 
 ---
 
@@ -80,6 +84,7 @@ server:
 Instalação do `nats-server` e `nats`
 
 #### macOS via Homebrew
+
 ```
 ## nats-server
 brew install nats-server
@@ -99,28 +104,83 @@ Quer ajudar a melhorar este projeto? Veja como começar no arquivo [CONTRIBUTING
 
 Este projeto está licenciado sob a licença Apache v2. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
-#  Passo a passo aula de sdk-manual
+# Passo a passo aula de sdk-manual
 
-1. Criar a repositório `/internal/telemetry` e depois criar o arquivo `/internal/telemetry/otel.go`
-2. Ir até o `cmd/main.go` e fazer a chamada para o opentelemetry funcionar, acrescentar o script abaixo no inicio do código:
-```
-func main() {
-	otelconfigFlag := flag.String("otel", "", "path to the config file")
-	configFlag := flag.String("config", "", "path to the config file")
-	flag.Parse()
+- Criar a repositório `/internal/telemetry` e depois criar o arquivo `/internal/telemetry/otel.go`
+- Ir até o `cmd/main.go` e fazer a chamada para o opentelemetry funcionar, acrescentar o script abaixo no inicio do código:
 
-	closer, err := telemetry.Setup(context.Background(), *otelConfigFlag)
-	if err != nil {
-		panic(err)
-	}
-	defer closer(context.Background())
-	c, _ := config.LoadConfig(*configFlag)
-```
-3. Para fazer o programa funcionar é necessário executar primeiro `nats-server -D -js` em seguida baixe o nats cli `go install github.com/nats-io/natscli/nats@latest` so entao execute o `go run ./cmd/all-in-one/`
-4. Se tiver algum problema com o nats talvez seja necessário ajustar sua configuração do go:
-```
-echo 'export PATH=$PATH:~/go/bin' >> ~/.bashrc
-source ~/.bashrc
-```
-5. Executar `nats -s localhost:4222 stream create payments --subjects "payment.process" --storage memory --replicas 1 --retention=limits --discard=old --max-msgs 1_000_000 --max-msgs-per-subject 100_000 --max-bytes 4GiB --max-age 1d --max-msg-size 10MiB --dupe-window 2m --allow-rollup --no-deny-delete --no-deny-purge` e testar fazer o run `go run ./cmd/all-in-one/`
-6. Testar `curl localhost:8080/payments`
+  ```
+  func main() {
+    otelconfigFlag := flag.String("otel", "", "path to the config file")
+    configFlag := flag.String("config", "", "path to the config file")
+    flag.Parse()
+
+    closer, err := telemetry.Setup(context.Background(), *otelConfigFlag)
+    if err != nil {
+      panic(err)
+    }
+    defer closer(context.Background())
+    c, _ := config.LoadConfig(*configFlag)
+  ```
+
+- Para fazer o programa funcionar é necessário executar primeiro `nats-server -D -js` em seguida baixe o nats cli `go install github.com/nats-io/natscli/nats@latest`, para identificar um serviço que esteja sendo executado na porta 4222 a mesma porta do nats-server use `sudo lsof -i :4222`
+- Se tiver algum problema com o nats talvez seja necessário ajustar sua configuração do go:
+  ```
+  echo 'export PATH=$PATH:~/go/bin' >> ~/.bashrc
+  source ~/.bashrc
+  ```
+- Executar `nats -s localhost:4222 stream create payments --subjects "payment.process" --storage memory --replicas 1 --retention=limits --discard=old --max-msgs 1_000_000 --max-msgs-per-subject 100_000 --max-bytes 4GiB --max-age 1d --max-msg-size 10MiB --dupe-window 2m --allow-rollup --no-deny-delete --no-deny-purge` e testar fazer o run `go run ./cmd/all-in-one/`
+- Testar `curl localhost:8080/payments`
+- Crie um arquivo na raiz do projeto `otel.yaml`
+
+  ```
+  file_format: "0.3"
+  disabled: false
+  resource:
+    schema_url: https://opentelemetry.io/schemas/1.26.0
+    attributes:
+      - name: service.name
+        value: "otel-na-pratica"
+      - name: service.version
+        value: "0.0.1"
+      - name: environment
+        value: "development"
+      - name: distribution
+        value: "all-in-one"
+  propagator:
+    composite: [ tracecontext, baggage ]
+  tracer_provider:
+    processors:
+      - batch:
+          exporter:
+            otlp:
+              protocol: grpc
+              endpoint: http://localhost:4317
+
+  meter_provider:
+    readers:
+      - periodic:
+          interval: 1000
+          exporter:
+            otlp:
+              protocol: http/protobuf
+              endpoint: http://localhost:4318
+
+  logger_provider:
+    processors:
+      - batch:
+          exporter:
+            otlp:
+              protocol: http/protobuf
+              endpoint: http://localhost:4318
+  ```
+
+- Instalar o otel-tui ferramenta que auxilia no processo de istrumentação da aplicação, por ela você consegue saber se os dados estão sendo enviados corretamente.
+  ```
+  go install github.com/ymtdzzz/otel-tui@latest
+  ```
+  Se der erro na instalação talvez seja necessário fazer:
+  ```
+  sudo apt update
+  sudo apt install libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev libxext-dev
+  ```
