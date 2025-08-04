@@ -184,3 +184,5 @@ Este projeto está licenciado sob a licença Apache v2. Veja o arquivo [LICENSE]
   sudo apt update
   sudo apt install libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev libxext-dev
   ```
+
+## Criando traces na aplicação
