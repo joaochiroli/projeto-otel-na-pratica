@@ -6,6 +6,7 @@ package memory
 import (
 	"context"
 
+	"go.opentelemetry.io/otel"
 	"github.com/dosedetelemetria/projeto-otel-na-pratica/internal/pkg/model"
 	"github.com/dosedetelemetria/projeto-otel-na-pratica/internal/pkg/store"
 )
@@ -14,7 +15,9 @@ type inMemoryUser struct {
 	store map[string]*model.User
 }
 
-func NewUserStore() store.User {
+func NewUserStore(ctx context.Context) store.User {
+	_, span := otel.Tracer("user").Start(ctx, "NewUserStore")
+	defer span.End()
 	return &inMemoryUser{
 		store: make(map[string]*model.User),
 	}

@@ -34,7 +34,7 @@ func main() {
 	}
 	defer closer(context.Background())
 
-	_, span := otel.Tracer("all-in-one").Start(context.Background(), "main")
+	ctx, span := otel.Tracer("all-in-one").Start(context.Background(), "main")
 	
 
 	core := zapcore.NewTee(
@@ -68,7 +68,7 @@ func main() {
 	{
 		logger.Info("Starting the user service")
 		span.AddEvent("Starting the user service")
-		a := app.NewUser(&c.Users)
+		a := app.NewUser(ctx, &c.Users)
 		a.RegisterRoutes(mux)
 	}
 
