@@ -77,6 +77,11 @@ server:
 
 ---
 
+# Branchs importantes do projeto
+
+- Primeira branch do projeto é a sdk-manual (https://github.com/dosedetelemetria/projeto-otel-na-pratica.git)
+  - Através dessa branch vamos usar essa branch para concluir as aulas do módulo Otel na Prática
+
 ## Instalação das ferramentas
 
 ### NATS
