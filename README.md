@@ -190,4 +190,12 @@ Este projeto está licenciado sob a licença Apache v2. Veja o arquivo [LICENSE]
   sudo apt install libx11-dev libxcursor-dev libxrandr-dev libxinerama-dev libxi-dev libxext-dev
   ```
 
-## Criando traces na aplicação
+## Latência entre serviços
+
+![alt text]({FE9AF010-1C69-4597-99AC-DA67F0CEB2D4}.png)
+
+Neste caso a requisição demorou 1.72ms. Ela fez um post, depois um get que demorou 1.44ms, esse Get abriu outro Get que demorou 173.58 micro segundos que devolveu o resultado pro Get anterior e depois pro Post.
+
+## Modelo de dados
+
+![alt text]({9B3E0C19-2BC4-46F6-8324-874A120152A2}.png)
