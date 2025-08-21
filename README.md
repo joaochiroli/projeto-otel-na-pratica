@@ -196,6 +196,20 @@ Este projeto está licenciado sob a licença Apache v2. Veja o arquivo [LICENSE]
 
 Neste caso a requisição demorou 1.72ms. Ela fez um post, depois um get que demorou 1.44ms, esse Get abriu outro Get que demorou 173.58 micro segundos que devolveu o resultado pro Get anterior e depois pro Post.
 
-## Modelo de dados
+### Conceitos teoricos a respeito do OTLP
+
+- Atributos: conjunto de chave e valor. Deixar os valores o mais próximo dos tipos primitivos porque a maioria das ferramentas lidam melhor com os primitivos.
 
 ![alt text]({9B3E0C19-2BC4-46F6-8324-874A120152A2}.png)
+
+- Escopos: é um elemento fundamental para estruturar os dados de telemetria. Ele aparece em diferentes contextos, como spans, métricas e logs, servindo para identificar a origem da instrumentação.
+
+- Recursos: são um conjunto de atributos que definem os metadados da aplicação. Exemplos: service-name, service-version.
+
+- Contexto: é a informação passada entre serviços para manter a rastreabilidade de uma requisição, incluindo identificadores como trace ID e span ID.
+
+- Bagagem: é um sinal no opentelemetry que é a transmissão de sinais entre dois serviços. É possivel colocar uma chave e valor no cabeçalho.
+
+- Rastros: mapeamento do que aconteceu ao cruzar vários serviços.
+
+- Métricas
