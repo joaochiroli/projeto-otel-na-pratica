@@ -212,4 +212,28 @@ Neste caso a requisição demorou 1.72ms. Ela fez um post, depois um get que dem
 
 - Rastros: mapeamento do que aconteceu ao cruzar vários serviços.
 
-- Métricas
+- Métricas:
+
+  - Estrutura Principal
+
+    - MetricsData é o container principal que contém ResourceMetrics e ScopeMetrics
+    - Cada nível tem seus próprios Attributes para metadados contextuais
+
+  - Tipos de Métricas
+    - Gauge: Valores instantâneos (ex: temperatura atual)
+      - Contém pontos de dados normais (N. Data Point)
+    - Sum: Valores acumulativos (ex: contador de requests)
+      - Pode ser monotônico ou não
+      - Contém pontos de dados normais
+    - Histogram: Distribuição de valores em buckets
+      - Inclui contadores de buckets, limites e quantis
+      - Contém pontos de dados de histograma (H. Data Point)
+  - Componentes dos Data Points
+    - Attributes: Metadados do ponto
+    - Time/Start time: Timestamps
+    - Value: O valor da métrica
+    - Exemplars: Exemplos de traces associados
+  - Elementos Especiais
+    - Buckets: Para histogramas (contadores e limites)
+    - Summary: Agregação de dados com datapoint específico
+    - Metadata (KV): Pares chave-valor para contexto adicional
