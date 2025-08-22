@@ -237,3 +237,9 @@ Neste caso a requisição demorou 1.72ms. Ela fez um post, depois um get que dem
     - Buckets: Para histogramas (contadores e limites)
     - Summary: Agregação de dados com datapoint específico
     - Metadata (KV): Pares chave-valor para contexto adicional
+
+- Logs: não é ponto forte do Opentelemetry, mas agora existe uma API de logs.
+
+- Perfis: são criados através do eBPF Profiler. OpenTelemetry e ainda está em desenvolvimento, sem suporte completo nas SDKs ou no Collector. Apesar de novo, o sinal de perfis já possui um modelo bem estruturado, incluindo resource profiles e scope profiles, que definem a instrumentação e agrupam os perfis coletados.
+
+- Entidades: um novo conjunto de propriedaes que ainda está em debate. Que serve para mostrar para você de forma não ambigua qual é sua fonte de telemetria. Porque com muitos dados pode ser que apareçam nomes iguais.
