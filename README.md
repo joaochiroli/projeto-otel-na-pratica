@@ -243,3 +243,24 @@ Neste caso a requisição demorou 1.72ms. Ela fez um post, depois um get que dem
 - Perfis: são criados através do eBPF Profiler. OpenTelemetry e ainda está em desenvolvimento, sem suporte completo nas SDKs ou no Collector. Apesar de novo, o sinal de perfis já possui um modelo bem estruturado, incluindo resource profiles e scope profiles, que definem a instrumentação e agrupam os perfis coletados.
 
 - Entidades: um novo conjunto de propriedaes que ainda está em debate. Que serve para mostrar para você de forma não ambigua qual é sua fonte de telemetria. Porque com muitos dados pode ser que apareçam nomes iguais.
+
+# OpenTelemetry API
+
+## Audiência
+
+Existe uma API de opentelemetry para cada linguagem de programação, ou seja, existe uma API para Go, uma API para JAVA, uma API para Python, etc.
+
+Existe uma especificação que deve ser seguida em cada uma das linguagens mencionadas acima.
+
+Nesta aula, mergulhamos nas diferentes audiências da OpenTelemetry API e como ela é implementada para cada linguagem de programação, como Go e Java. Discutimos a importância de seguir a especificação da API para garantir consistência, independentemente da linguagem escolhida.
+
+Identificamos três grupos principais que utilizam a API: **desenvolvedores de software, engenheiros de SRE e criadores de bibliotecas ou frameworks**. Cada grupo tem suas necessidades específicas, mas todos compartilham o objetivo de tornar suas aplicações mais observáveis e resilientes.
+
+Além disso, abordamos as diferenças entre instrumentação para rastros e métricas, destacando a flexibilidade do OpenTelemetry para diferentes casos de uso. Entenda como aplicar esses conceitos para desenvolver sistemas mais confiáveis e alinhados às melhores práticas do mercado.
+
+## Rastreamento distribuido
+
+Existem algumas funções que podem ser adicionadas para melhorar o rastreamento da sua aplicação como:
+
+- Span Add Link
+- Trace Span Kind
