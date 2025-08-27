@@ -246,6 +246,23 @@ Neste caso a requisição demorou 1.72ms. Ela fez um post, depois um get que dem
 
 # OpenTelemetry API
 
+Podemos dizer que a API é como a interface de um motor de carro (o volante, o pedal do acelerador, o painel). Você sabe como usá-la para dirigir, mas ela não é o motor em si.
+
+Fluxo de Dados (Como eles trabalham juntos)
+Seu código da aplicação -> API -> SDK -> Processadores -> Exportadores -> Backend (Jaeger, Zipkin, etc.)
+
+1. Seu código chama a API: span = tracer.spanBuilder("operacao").startSpan()
+
+2. A API delega a criação do span para a implementação do SDK configurada.
+
+3. O SDK cria um objeto Span, gerencia seu ciclo de vida e o contexto.
+
+4. Quando o span é finalizado (span.end()), o SDK o entrega para os Processadores configurados.
+
+5. Os Processadores fazem seu trabalho (ex.: amostragem) e passam o span para os Exportadores.
+
+6. Os Exportadores convertem o span no formato adequado e o enviam para o backend configurado.
+
 ## Audiência
 
 Existe uma API de opentelemetry para cada linguagem de programação, ou seja, existe uma API para Go, uma API para JAVA, uma API para Python, etc.
