@@ -281,3 +281,5 @@ Existem algumas funções que podem ser adicionadas para melhorar o rastreamento
 
 - Span Add Link
 - Trace Span Kind
+
+Imagem do docker com Grafana, Tempo, Loki, OTLP Collector e Prometheus: `grafana/otel-lgtm`

@@ -17,6 +17,9 @@ import (
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
+	"github.com/dosedetelemetria/projeto-otel-na-pratica/internal"
+	"github.com/dosedetelemetria/projeto-otel-na-pratica/internal/telemetry"
+	"go.opentelemetry.io/otel/metric"
 )
 
 // PaymentHandler is an HTTP handler that performs CRUD operations for model.Payment using a store.Payment
@@ -25,15 +28,31 @@ type PaymentHandler struct {
 	js                    jetstream.JetStream
 	jsSubject             string
 	subscriptionsEndpoint string
+
+	cartSizeHistogram metric.Float64Histogram
+	numPayments       metric.Int64Counter
 }
 
 // NewPaymentHandler returns a new PaymentHandler
 func NewPaymentHandler(store store.Payment, js jetstream.JetStream, jsSubject string, subscriptionsEndpoint string) *PaymentHandler {
+	cartSizeHistogram := internal.Must(telemetry.Meter().Float64Histogram("payment.cart_size",
+		metric.WithDescription("The size of the cart in a payment."),
+		metric.WithUnit("{price}"),
+	))
+
+	numPayments := internal.Must(telemetry.Meter().Int64Counter("payment.num_payments",
+		metric.WithDescription("The number of payments."),
+		metric.WithUnit("{payment}"),
+	))
+
 	return &PaymentHandler{
 		store:                 store,
 		js:                    js,
 		jsSubject:             jsSubject,
 		subscriptionsEndpoint: subscriptionsEndpoint,
+
+		cartSizeHistogram: cartSizeHistogram,
+		numPayments:       numPayments,
 	}
 }
 
@@ -60,6 +79,15 @@ func (h *PaymentHandler) Create(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request payload", http.StatusBadRequest)
 		return
 	}
+
+	tenant := r.Header.Get("Tenant")
+
+	h.cartSizeHistogram.Record(r.Context(),
+		payment.Amount,
+		metric.WithAttributeSet(attribute.NewSet(attribute.String("tenant", tenant))),
+	)
+
+	h.numPayments.Add(r.Context(), 1)
 
 	// Check if subscription exists
 	sub, err := otelhttp.Get(r.Context(), h.subscriptionsEndpoint + "/" + payment.SubscriptionID)
