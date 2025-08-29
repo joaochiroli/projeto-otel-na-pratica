@@ -32,7 +32,7 @@ type Payment struct {
 
 func NewPayment(cfg *config.Payments) (*Payment, error) {
 	ctx, span := telemetry.Tracer().Start(context.Background(), "NewPayment",
-		trace.WithSpanKind(span, trace.SpanKindServer),
+		trace.WithSpanKind(trace.SpanKindServer),
 		trace.WithAttributes(attribute.String("consumer", cfg.NATS.ConsumerName)),
 	)
 	defer span.End()
@@ -47,7 +47,7 @@ func NewPayment(cfg *config.Payments) (*Payment, error) {
 		return nil, err
 	}
 	
-	err := db.AutoMigrate(&model.Payment{})
+	err = db.AutoMigrate(&model.Payment{})
 	if err != nil {
 		span.RecordError(err)
 		span.SetStatus(codes.Error, err.Error())

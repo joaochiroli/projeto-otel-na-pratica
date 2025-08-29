@@ -15,6 +15,8 @@ import (
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/codes"
+	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/trace"
 )
 
 // PaymentHandler is an HTTP handler that performs CRUD operations for model.Payment using a store.Payment
@@ -38,12 +40,6 @@ func NewPaymentHandler(store store.Payment, js jetstream.JetStream, jsSubject st
 func (h *PaymentHandler) List(w http.ResponseWriter, r *http.Request) {
 	span := trace.SpanFromContext(r.Context())
 	span.SetAttributes(attribute.String("tenant", r.Header.Get("Tenant")))
-
-
-
-	span.AddLink(trace.Link{
-		SpanContext: otherspan.SpanContext(),
-	})
 
 	payments, err := h.store.List(r.Context())
 	if err != nil {
