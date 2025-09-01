@@ -283,3 +283,5 @@ Existem algumas funções que podem ser adicionadas para melhorar o rastreamento
 - Trace Span Kind
 
 Imagem do docker com Grafana, Tempo, Loki, OTLP Collector e Prometheus: `grafana/otel-lgtm`
+
+Comando pra inicializar: `docker run -p 3000:3000 -p 4317:4317 -p 4318:4318 --rm -ti grafana/otel-lgtm`
