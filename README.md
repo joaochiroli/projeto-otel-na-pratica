@@ -285,3 +285,9 @@ Existem algumas funções que podem ser adicionadas para melhorar o rastreamento
 Imagem do docker com Grafana, Tempo, Loki, OTLP Collector e Prometheus: `grafana/otel-lgtm`
 
 Comando pra inicializar: `docker run -p 3000:3000 -p 4317:4317 -p 4318:4318 --rm -ti grafana/otel-lgtm`
+
+# OTLP SDK
+
+Apresentei os três tipos principais de providers: TracerProvider para rastreamento, MeterProvider para métricas e LoggerProvider para logs. Cada um deles serve como uma "receita" para criar objetos responsáveis por coletar sinais. Para rastreamento, por exemplo, é comum configurar processadores como o batch processor, exportadores como OTLP ou Jaeger, e definir estratégias de amostragem. No caso de métricas, além de processadores e exportadores, entra em cena o componente exclusivo chamado reader, que será abordado mais a fundo em seu módulo específico.
+
+Também destaquei a importância dos resource attributes. Esses atributos são compartilhados entre todos os sinais e ajudam a correlacionar logs, métricas e rastros de uma mesma instância.
