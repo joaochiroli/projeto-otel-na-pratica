@@ -291,3 +291,25 @@ Comando pra inicializar: `docker run -p 3000:3000 -p 4317:4317 -p 4318:4318 --rm
 Apresentei os três tipos principais de providers: TracerProvider para rastreamento, MeterProvider para métricas e LoggerProvider para logs. Cada um deles serve como uma "receita" para criar objetos responsáveis por coletar sinais. Para rastreamento, por exemplo, é comum configurar processadores como o batch processor, exportadores como OTLP ou Jaeger, e definir estratégias de amostragem. No caso de métricas, além de processadores e exportadores, entra em cena o componente exclusivo chamado reader, que será abordado mais a fundo em seu módulo específico.
 
 Também destaquei a importância dos resource attributes. Esses atributos são compartilhados entre todos os sinais e ajudam a correlacionar logs, métricas e rastros de uma mesma instância.
+
+## Rastreamento Distribuido
+
+Esse é o ponto central da configuração, onde definimos processadores e amostradores. Foram apresentados diferentes tipos de samplers, como o AlwaysOn, que registra todos os spans, e o AlwaysOff, que descarta todos. Também incluí opções mais sofisticadas, como o ParentBased, o TraceIDRatioBased e o Jaeger Remote Sampler, que usa arquivos JSON remotos para determinar estratégias de amostragem.
+
+Expliquei como funcionam as decisões de amostragem baseadas no contexto propagado entre serviços. Por exemplo, o ParentBased respeita a decisão tomada pelo span pai, garantindo consistência ao longo da cadeia de rastreamento. É possível combinar estratégias: quando não há contexto anterior, pode-se recorrer ao TraceIDRatioBased para aplicar uma amostragem probabilística.
+
+## Métricas
+
+No código, configurei o MetricProvider com um PeriodicReader e um Exporter via OTLP HTTP, garantindo que as métricas sejam exportadas em intervalos regulares. Usei os mesmos atributos de recurso que foram definidos anteriormente para rastros, garantindo consistência entre os sinais.
+
+## Logs
+
+A configuração abordada foi apenas da SDK de logs — não entramos na LogBridge diretamente. Expliquei que mesmo que tecnicamente possamos ter múltiplos LoggerProviders (LPs), o registro é feito globalmente com global.setLogProvider, o que centraliza o fornecimento de loggers na aplicação. Essa abordagem facilita a configuração, mas exige atenção à forma como esse provider é estruturado. No código, construímos o LoggerProvider de forma semelhante ao que fizemos anteriormente para traces e métricas, adicionando o recurso de batch processing e configurando o exportador (LXP) para envio via OTLP HTTP, utilizando o endpoint /v1/logs.
+
+## Usando Arquivo de Configuração
+
+Nesta aula, eu mostrei uma alternativa à configuração programática ou via variáveis de ambiente: o uso de arquivos de configuração para inicializar a SDK do OpenTelemetry. Nas aulas anteriores, usamos muito código para configurar rastros, métricas e logs. Isso é flexível, mas pouco prático em cenários maiores ou quando se deseja reaproveitar configurações. Com os arquivos, conseguimos centralizar e simplificar essas definições, mantendo compatibilidade com múltiplas linguagens, como Go, Java e PHP. A especificação do formato é definida pela SIG Configuration, o que garante padronização.
+
+No exemplo com Go, usamos uma flag para apontar o caminho do arquivo YAML de configuração. A partir disso, criamos uma função que lê esse arquivo, interpola variáveis de ambiente e gera objetos Go para configurar a SDK. Em poucas linhas conseguimos aplicar toda a configuração, comparando com as dezenas de linhas necessárias no modelo programático. Apesar de pequenos bugs na propagação, que ainda exigem um ajuste manual, o ganho de simplicidade e legibilidade é muito evidente.
+
+A maior vantagem desse modelo é a flexibilidade: conseguimos, por exemplo, configurar múltiplos processors ou exporters (como enviar dados simultaneamente por HTTP e gRPC) sem modificar o código da aplicação. Em ambientes legados, isso evita recompilações, PRs e deploys demorados. Basta editar o arquivo de configuração e reiniciar o serviço. Com isso, encerramos o módulo sobre configuração da SDK, destacando como o uso de arquivos traz mais controle e agilidade para o time de engenharia.

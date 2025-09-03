@@ -33,14 +33,54 @@ func main() {
 		log.Fatalf(err)
 	}
 
-	tp := trace.NewTracerProvider(trace.WithResource(resource.Default()), trace.WithBatcher(texp))
+	tp := sdktrace.NewTracerProvider(
+		sdktrace.WithResource(resource.Default()),
+		sdktrace.WithBatcher(texp),
+		sdktrace.WithSampler(sdktrace.ParentBased(sdktrace.TraceIDRatioBased(0.1))),
+		sdktrace.WithRawSpanLimits(sdktrace.SpanLimits{
+			AttributeValueLengthLimit: 1000,
+			EventCountLimit:           1000,
+			LinkCountLimit:            1000,
+		}),
+	)
 
+	mexp, err := otlpmetrichttp.New(context.Background(), otlpmetrichttp.WithInsecure(), otlpmetrichttp.WithEndpoint("localhost:4318"))
+	if err != nil {
+		log.Fatalf(err)
+	}
+
+	mp := sdkmetric.NewMeterProvider(
+		sdkmetric.WithResource(resource.Default()),
+		sdkmetric.WithReader(sdkmetric.NewPeriodicReader(mexp)),
+		sdkmetric.WithView(
+			sdkmetric.NewView(
+				sdkmetric.Instrument{
+					Name: "payment.cart_size",
+					Scope: instrumentation.Scope{
+						Name: telemetry.Scope,
+					},
+				},
+				sdkmetric.Stream{
+					Name: 	  "payment.cart_sum",
+					Aggregation: sdkmetric.AggregationSum{},
+				},
+			),
+		),
+		sdkmetric.WithExemplarFilter(func(ctx context.Context) bool {
+			return true
+		}),
+	)
+	
 	otel.SetTracerProvider(tp)
+	otel.SetMeterProvider(mp)
+	global.SetLoggerProvider(lp)
 
 	// producao
 	tr := otel.Tracer("github.com/dosedetelemetria/projeto-otel-na-pratica/users")
 	ctx, span := tr.Start(context.Background(), "user.main")
 	defer span.End()
+
+	span.AddEvent("user.main")
 
 	c, _ := config.LoadConfig(*configFlag)
 
