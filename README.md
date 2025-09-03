@@ -134,7 +134,12 @@ Este projeto está licenciado sob a licença Apache v2. Veja o arquivo [LICENSE]
   echo 'export PATH=$PATH:~/go/bin' >> ~/.bashrc
   source ~/.bashrc
   ```
-- Executar `nats -s localhost:4222 stream create payments --subjects "payment.process" --storage memory --replicas 1 --retention=limits --discard=old --max-msgs 1_000_000 --max-msgs-per-subject 100_000 --max-bytes 4GiB --max-age 1d --max-msg-size 10MiB --dupe-window 2m --allow-rollup --no-deny-delete --no-deny-purge` e testar fazer o run `go run ./cmd/all-in-one/`
+- Executar `nats -s localhost:4222 stream create payments --subjects "payment.process" --storage memory --replicas 1 --retention=limits --discard=old --max-msgs 1_000_000 --max-msgs-per-subject 100_000 --max-bytes 4GiB --max-age 1d --max-msg-size 10MiB --dupe-window 2m --allow-rollup --no-deny-delete --no-deny-purge`, depois executar `otel-tui` e testar fazer o run `go run ./cmd/all-in-one/`
+- Se quiser pode subir um docker com:
+  ```
+  Imagem do docker com Grafana, Tempo, Loki, OTLP Collector e Prometheus: `grafana/otel-lgtm`
+  Comando pra inicializar: `docker run -p 3000:3000 -p 4317:4317 -p 4318:4318 --rm -ti grafana/otel-lgtm`
+  ```
 - Testar `curl localhost:8080/payments`
 - Crie um arquivo na raiz do projeto `otel.yaml`
 
