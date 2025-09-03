@@ -319,3 +319,49 @@ Nesta aula, eu mostrei uma alternativa à configuração programática ou via va
 No exemplo com Go, usamos uma flag para apontar o caminho do arquivo YAML de configuração. A partir disso, criamos uma função que lê esse arquivo, interpola variáveis de ambiente e gera objetos Go para configurar a SDK. Em poucas linhas conseguimos aplicar toda a configuração, comparando com as dezenas de linhas necessárias no modelo programático. Apesar de pequenos bugs na propagação, que ainda exigem um ajuste manual, o ganho de simplicidade e legibilidade é muito evidente.
 
 A maior vantagem desse modelo é a flexibilidade: conseguimos, por exemplo, configurar múltiplos processors ou exporters (como enviar dados simultaneamente por HTTP e gRPC) sem modificar o código da aplicação. Em ambientes legados, isso evita recompilações, PRs e deploys demorados. Basta editar o arquivo de configuração e reiniciar o serviço. Com isso, encerramos o módulo sobre configuração da SDK, destacando como o uso de arquivos traz mais controle e agilidade para o time de engenharia.
+
+# Opentelemetry Collector
+
+## Tipos de componentes
+
+- **Receptores** - Coletam dados de telemetria de várias fontes:
+
+  - Receptor OTLP (Protocolo OpenTelemetry)
+  - Receptor Jaeger
+  - Receptor Prometheus
+  - Receptor StatsD
+  - Receptor de métricas do host
+  - Receptor de logs de arquivo
+  - E muitos outros para diferentes protocolos e formatos
+
+- **Processadores** - Transformam e enriquecem os dados de telemetria:
+
+  - Processador de lote (agrupa dados para exportação eficiente)
+  - Limitador de memória (previne uso excessivo de memória)
+  - Processador de recurso (adiciona/modifica atributos de recursos)
+  - Processador de atributos (manipula atributos de span/métricas)
+  - Processador de amostragem (controla o volume de dados)
+  - Processador de filtro (descarta dados indesejados)
+
+- **Exportadores** - Enviam dados processados para backends de observabilidade:
+
+  - Exportador OTLP
+  - Exportador Prometheus
+  - Exportador Jaeger
+  - Exportador Elasticsearch
+  - Exportador de arquivo
+  - Exportadores de provedores cloud (AWS X-Ray, GCP Cloud Trace, Azure Monitor)
+
+- **Extensões** - Fornecem capacidades adicionais:
+
+  - Extensão de verificação de saúde
+  - Profiler de desempenho (pprof)
+  - Lastro de memória (estabiliza o uso de memória)
+  - Extensões de autenticação
+
+Fluxo da Arquitetura
+Os dados fluem através do collector nesta sequência:
+
+- Receptores coletam dados de telemetria
+- Processadores transformam e filtram os dados
+- Exportadores enviam os dados processados para os destinos
