@@ -126,6 +126,7 @@ Este projeto está licenciado sob a licença Apache v2. Veja o arquivo [LICENSE]
     }
     defer closer(context.Background())
     c, _ := config.LoadConfig(*configFlag)
+  }
   ```
 
 - Para fazer o programa funcionar é necessário executar primeiro `nats-server -D -js` em seguida baixe o nats cli `go install github.com/nats-io/natscli/nats@latest`, para identificar um serviço que esteja sendo executado na porta 4222 a mesma porta do nats-server use `sudo lsof -i :4222`
