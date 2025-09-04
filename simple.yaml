@@ -1,0 +1,36 @@
+extensions:
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+    
+exporters:
+  debug:
+    verbosity: detailed
+
+processors:
+  transform:
+    error_mode: ignore
+    trace_statements:
+    - statements:
+      - set(resource.attributes["tenant"], "my-tenant")
+
+connectors:
+  count:
+
+service:
+  extensions: []
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: []
+      exporters: [debug]
+    # metrics:
+    #   receivers: [otlp]
+    #   processors: [count]
+    #   exporters: [debug]
+    # logs:
+    #   receivers: [otlp]
+    #   processors: []
+    #   exporters: [debug]
