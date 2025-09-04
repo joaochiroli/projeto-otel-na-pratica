@@ -365,3 +365,7 @@ Os dados fluem através do collector nesta sequência:
 - Receptores coletam dados de telemetria
 - Processadores transformam e filtram os dados
 - Exportadores enviam os dados processados para os destinos
+
+## Onde obter o Opentelemetry Collector
+
+- https://github.com/open-telemetry/opentelemetry-collector-releases
