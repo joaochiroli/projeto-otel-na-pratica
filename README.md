@@ -123,3 +123,7 @@ Quer pipeline configurável
 Padrão vendor-neutral
 
 ![alt text]({A902C855-7374-43F7-93D2-3D995114A0BE}.png)
+
+ou outro tipo de arquitetura
+
+![alt text]({59AF3D38-70FE-4A74-9E6F-F84B77D220EA}.png)
