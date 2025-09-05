@@ -43,3 +43,83 @@ ou
 
 go run ./cmd/all-in-one/
 ```
+
+### Agent vs Gateways vs Coletores
+
+**OpenTelemetry Agent**
+O Agent é um componente que roda como um processo separado no mesmo host da aplicação:
+Características:
+
+Executa como sidecar ou daemon no nó/container
+Coleta telemetria localmente da aplicação
+Baixa latência entre app e agent
+Processamento local dos dados
+
+- Vantagens:
+
+  - Menor impacto na aplicação (offloading de processamento)
+  - Resiliência local (buffer local caso backend falhe)
+  - Configuração centralizada por nó
+
+- Desvantagens:
+
+  - Overhead de recursos por nó
+  - Gerenciamento de configuração distribuído
+
+**OpenTelemetry Gateway**
+O Gateway é um componente centralizado que atua como proxy entre múltiplas fontes e backends:
+Características:
+
+Instância centralizada recebendo de múltiplos agents/apps
+Agregação e roteamento de telemetria
+Ponto único de controle e política
+Load balancing para backends
+
+- Vantagens:
+
+  - Redução de conexões diretas aos backends
+  - Controle centralizado de políticas
+  - Agregação e correlação de dados
+  - Economia de recursos em escala
+
+- Desvantagens:
+
+  - Ponto único de falha (precisa ser redundante)
+  - Maior latência na pipeline
+
+**OpenTelemetry Collector**
+O Collector é o componente core que pode funcionar tanto como Agent quanto Gateway:
+
+Arquitetura:
+Receivers → Processors → Exporters
+Receivers: Coletam dados (OTLP, Jaeger, Zipkin, Prometheus)
+Processors: Transformam/filtram dados (sampling, batching)
+Exporters: Enviam para backends (Jaeger, Prometheus, ELK)
+Padrões de Deployment
+
+1. Agent Pattern
+   App → OTel Collector (Agent) → Backend
+2. Gateway Pattern
+   App → OTel Collector (Agent) → OTel Collector (Gateway) → Backend
+3. Direct Pattern
+   App → Backend (usando SDK direto)
+   Quando usar cada um?
+   Use Agent quando:
+
+Aplicações em containers/K8s
+Necessita processamento local
+Quer desacoplar app do backend
+
+Use Gateway quando:
+
+Ambiente multi-tenant
+Necessita controle centralizado
+Muitas aplicações → poucos backends
+
+Use Collector quando:
+
+Necessita flexibilidade (pode ser agent ou gateway)
+Quer pipeline configurável
+Padrão vendor-neutral
+
+![alt text]({A902C855-7374-43F7-93D2-3D995114A0BE}.png)
