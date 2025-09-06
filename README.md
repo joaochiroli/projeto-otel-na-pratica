@@ -180,4 +180,18 @@ outro exemplo de arquivo yaml
 
 ### Segurança - TLS
 
+Nesta aula, você aprenderá a configurar o OpenTelemetry Collector para se comunicar utilizando TLS (Transport Layer Security). Vamos abordar os componentes essenciais do TLS, como a comunicação criptografada entre cliente e servidor, o papel do servidor ao oferecer um certificado TLS, e a eventual necessidade de um certificado de cliente para autenticação mútua.Exploraremos os três componentes chave do TLS: o certificado (arquivo .pem com informações do servidor e possivelmente do cliente), a chave privada (utilizada pelo servidor para decriptografar as informações) e, opcionalmente, a Certificate Authority (CA) (raiz de confiança para verificar a autenticidade dos certificados).Veremos como configurar o Collector com pipelines, demonstrando como receber informações tanto em texto plano quanto de forma criptografada via TLS. Através da configuração de receivers e exporters, entenderemos como aplicar as definições de TLS para garantir a segurança na transmissão dos seus dados de telemetria.Esta aula é fundamental para quem busca proteger a comunicação do seu OpenTelemetry Collector, garantindo a confidencialidade e integridade dos dados de observabilidade em seus ambientes
+
+Ready to move on to the next Lesson?
+
 ![alt text]({0AA79C35-70C1-496D-913E-A318538E91E7}.png)
+![alt text]({961F0E0F-E763-4DEF-A4B0-F693BFB3E700}.png)
+
+### Autenticação
+
+É possivel usar um token do Keyclock por exemplo, para fazer a autenticação.
+![alt text]({1DCA2595-FBDB-4916-8582-9F2CD0BAB944}.png)
+
+Um outro tipo de teste no arquivo collector
+
+![alt text]({CC2577FF-D573-40C2-B9FA-FF39CB41792A}.png)
