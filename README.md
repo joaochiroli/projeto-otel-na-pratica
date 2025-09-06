@@ -156,7 +156,7 @@ Caso você queira criar vários rastros é possivel digitar `telemetrygen traces
 
 ![alt text]({4231D92F-347A-4AF6-83EA-CE465920A8A4}.png)
 
-### Técnicas de Resiliência
+### Técnicas de Resiliência (É possivel fazer um armazenamento de fila em Disco)
 
 Nesse módulo, eu aprofundei como podemos nos proteger contra falhas no collector agent, especificamente quando ele sai do ar. Comecei retomando o diagrama de arquitetura e relembrando a proteção já discutida em casos de falhas na comunicação entre o agent e o gateway. O foco, porém, foi mostrar o que acontece quando o agent propriamente dito falha — enquanto nosso serviço continua emitindo dados de telemetria. A principal preocupação aqui é evitar a perda de dados que estão em memória no momento da queda.
 
