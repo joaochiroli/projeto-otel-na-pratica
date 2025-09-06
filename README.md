@@ -195,3 +195,7 @@ Ready to move on to the next Lesson?
 Um outro tipo de teste no arquivo collector
 
 ![alt text]({CC2577FF-D573-40C2-B9FA-FF39CB41792A}.png)
+
+### Criação do seu OTLP Colector
+
+Se você usar o otel-contrib você vai ter todas as extensões possiveis do otel, o seu binário também será maior, o que as vezes não é o melhor dos mundos pra você. Pode até alocar espaço na memória dependendo do caso.
