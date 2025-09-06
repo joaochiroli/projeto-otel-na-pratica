@@ -147,3 +147,17 @@ A parte realmente importante foi entender como coletar a telemetria gerada pelo 
 A ideia principal foi mostrar como o próprio processo de observabilidade também pode — e deve — ser observado. Saber como o Collector se comporta nos dá visibilidade crítica sobre o que pode estar acontecendo com a instrumentação. Isso é essencial para quem trabalha com observabilidade em ambientes distribuídos e precisa garantir que tudo esteja fluindo como esperado.
 
 Para essa parte dos estudos estamos usando este repo (https://github.com/jpkrohling/otelcol-cookbook)
+
+Caso você queira criar vários rastros é possivel digitar `telemetrygen traces --traces 1_000 --otlp-insecure`
+
+É possivel visualizar as métricas através do:
+
+![alt text]({4231D92F-347A-4AF6-83EA-CE465920A8A4}.png)
+
+### Técnicas de Resiliência
+
+Nesse módulo, eu aprofundei como podemos nos proteger contra falhas no collector agent, especificamente quando ele sai do ar. Comecei retomando o diagrama de arquitetura e relembrando a proteção já discutida em casos de falhas na comunicação entre o agent e o gateway. O foco, porém, foi mostrar o que acontece quando o agent propriamente dito falha — enquanto nosso serviço continua emitindo dados de telemetria. A principal preocupação aqui é evitar a perda de dados que estão em memória no momento da queda.
+
+Para lidar com isso, mostrei como configurar o uso de file storage como técnica de persistência, usando extensões disponíveis no próprio collector. Isso permite que as filas de envio (Sending Queues) escrevam os dados temporários em disco. Na prática, a gente define o tipo de storage como file_storage, especifica o diretório e configura um timeout. Com isso, mesmo que o agent falhe, ao voltar ele consegue recuperar do disco os dados que estavam empilhados e enviá-los ao collector gateway, garantindo continuidade e confiabilidade no envio da telemetria.
+
+Finalizei a aula com uma demonstração prática: simulei a queda do agent durante o envio de rastros e mostrei que, ao reiniciá-lo, ele recuperou os dados salvos em disco e os enviou corretamente ao backend. Foi tudo tão rápido que quase não conseguimos acompanhar as métricas, mas o resultado final confirmou que o mecanismo de persistência funcionou como esperado. Essa abordagem é essencial para ambientes de produção, onde perdas de dados podem comprometer análises e monitoramentos críticos.
