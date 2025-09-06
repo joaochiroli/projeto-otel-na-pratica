@@ -1,0 +1,26 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+
+exporters:
+  otlp:
+    endpoint: localhost:5317
+    sending_queue:
+      storage: file_storage
+    tls:
+      insecure: true
+
+extensions:
+  file_storage:
+    directory: /tmp/otelcol
+
+service:
+  extensions: [ file_storage ]
+  pipelines:
+    traces:
+      receivers: [ otlp ]
+      exporters: [ otlp ]
+  telemetry:
+    metrics:
+      address: ":8888"

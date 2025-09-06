@@ -148,6 +148,8 @@ A ideia principal foi mostrar como o próprio processo de observabilidade també
 
 Para essa parte dos estudos estamos usando este repo (https://github.com/jpkrohling/otelcol-cookbook)
 
+Um exemplo de arquivo de configuração está em `simple2.yaml`
+
 Caso você queira criar vários rastros é possivel digitar `telemetrygen traces --traces 1_000 --otlp-insecure`
 
 É possivel visualizar as métricas através do:
