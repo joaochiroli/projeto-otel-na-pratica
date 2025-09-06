@@ -177,3 +177,7 @@ Essa abordagem não elimina a necessidade de outros mecanismos como sending_queu
 outro exemplo de arquivo yaml
 
 ![alt text]({3332EF0F-BF9C-4810-8610-BC1AB2EB2E6C}.png)
+
+### Segurança - TLS
+
+![alt text]({0AA79C35-70C1-496D-913E-A318538E91E7}.png)
