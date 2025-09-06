@@ -172,4 +172,4 @@ Mostrei o setup na prática, substituindo o envio direto de OTLP por mensagens e
 
 Essa abordagem não elimina a necessidade de outros mecanismos como sending_queue em disco, mas ela expande bastante a robustez do sistema, especialmente quando lidamos com arquiteturas distribuídas e times que já dominam Kafka. Reforcei também que essa arquitetura pode ser aplicada tanto entre agente e gateway quanto entre gateway e backend de observabilidade. Ao final, validei a entrega completa dos dados mesmo após quedas simuladas, confirmando o valor do Kafka como buffer resiliente para pipelines de telemetria.
 
-Ready to move on to the next Lesson?
+![alt text]({208B8656-7FF8-4A1A-8A13-2175F40478FF}.png)
