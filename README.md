@@ -200,8 +200,10 @@ Um outro tipo de teste no arquivo collector
 
 Se você usar o otel-contrib você vai ter todas as extensões possiveis do otel, o seu binário também será maior, o que as vezes não é o melhor dos mundos pra você. Pode até alocar espaço na memória dependendo do caso.
 
-Parar criar sua versão você pode ir até o otel-releases no github
+Parar criar sua versão você pode ir até o otel-distributions no github (https://github.com/jpkrohling/otelcol-distributions) ou (https://github.com/open-telemetry/opentelemetry-collector-releases/tree/main/distributions)
 
 e baixar o binário que você quer em `cmd/builder`
 
 ![alt text]({2533FEE0-96DE-448B-A2A6-F4A4FC99A3FE}.png)
+
+Para criar o arquivo de configuração primeiro você vai precisar criar o arquivo `manifest.yaml`, antes de criar o arquivo é bom se basear em algum arquivo de manifesto que já foi criado no Github. Depois de ajustar quais itens você quer basta: `ocb --config manifest.yaml`e depois vocÊ pode executar o collector `./_build/meucollector --config simple.yaml` por exemplo.
