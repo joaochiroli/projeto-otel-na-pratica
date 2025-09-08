@@ -207,3 +207,25 @@ e baixar o binário que você quer em `cmd/builder`
 ![alt text]({2533FEE0-96DE-448B-A2A6-F4A4FC99A3FE}.png)
 
 Para criar o arquivo de configuração primeiro você vai precisar criar o arquivo `manifest.yaml`, antes de criar o arquivo é bom se basear em algum arquivo de manifesto que já foi criado no Github. Depois de ajustar quais itens você quer basta: `ocb --config manifest.yaml`e depois vocÊ pode executar o collector `./_build/meucollector --config simple.yaml` por exemplo.
+
+Precisa instalar o `ocb`:
+
+```
+### Listando todos os binários instalados
+
+ls -la /root/go/bin/
+
+## Instalando o ocb
+go install go.opentelemetry.io/collector/cmd/builder@latest
+
+## O binário vai se chamar builder
+ls -la /root/go/bin/
+
+## Como o alias esta se chamando builder possivel fazer o seguinte
+sudo ln -s /root/go/bin/builder /usr/local/bin/ocb
+echo 'alias ocb="builder"' >> ~/.bashrc
+source ~/.bashrc
+
+```
+
+![alt text]({ACB8A769-F158-489A-9D2E-00BF8F30F7AA}.png)
