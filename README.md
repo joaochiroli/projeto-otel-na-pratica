@@ -232,6 +232,8 @@ source ~/.bashrc
 
 ### Span Metrics
 
+Usado para coletar dados de métricas através do rastreamento distribuido, ou seja, se você instrumentou a aplicação para traces a partir dai essa funcionalidade permite que você tenha dados de métricas.
+
 Nesta aula, eu apresento o conector Span Metrics, um componente poderoso do OpenTelemetry Collector projetado para derivar métricas de performance essenciais, como as métricas RED (Requisições, Erros, Duração), diretamente de dados de rastreamento distribuído. Eu começo com um resgate histórico, explicando que a funcionalidade nasceu no projeto Jaeger e evoluiu do antigo Span Metrics Processor para a arquitetura de Connector atual, que é mais robusta e eficiente.
 
 O foco da aula é uma demonstração prática e detalhada. Eu mostro como configurar o coletor com uma pipeline para receber os rastros e outra para exportar as métricas geradas pelo conector para um backend como o Grafana. Para simular um tráfego realista, eu utilizo dados de exemplo da aplicação "Hotel Demo". Como resultado, nós visualizamos as métricas em tempo real em um dashboard que importamos, exibindo claramente a latência, a taxa de requisições e os erros por serviço.
