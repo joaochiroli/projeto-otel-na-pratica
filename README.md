@@ -243,3 +243,13 @@ Ao final, eu reforço o principal benefício do conector: a capacidade de obter 
 ![alt text]({76F827FB-58DC-4460-895D-334EBE85DA51}.png)
 
 Link: https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/connector/spanmetricsconnector/testdata/config.yaml
+
+# Extendendo o Collector
+
+### Extensions
+
+Hoje eu mostrei como criar uma extension personalizada para o OpenTelemetry Collector, explicando o papel que essas extensões exercem na arquitetura: elas permitem adicionar funcionalidades ao Collector sem impactar diretamente a pipeline de dados. Começamos revisando o conceito e partimos para a criação de uma nova distribuição, onde definimos os arquivos manifest.yaml e otel.yaml para estruturar nosso ambiente. Já de início, montamos a configuração do Collector pensando nos componentes necessários e como a extension seria integrada.
+
+Em seguida, criei a estrutura da extensão com os arquivos essenciais: configuração, factory.go e a própria lógica da extension. Mostrei como o Collector consome essas definições através do main.go, que monta os componentes a partir do builder. Implementamos a interface obrigatória com os métodos Start e Shutdown, além de uma configuração padrão com a URL, que pode ser sobrescrita no YAML. Reforcei a importância de entender essa integração, especialmente quando o código é externo ao repositório oficial do projeto.
+
+Por fim, compilei a nova distribuição, corrigi pequenos bugs (como o uso de letras maiúsculas em campos exportados) e validei que o Collector inicializa corretamente, utilizando tanto o valor padrão da URL quanto o valor sobrescrito. Esse processo serve como base para o desenvolvimento de novos componentes e módulos. A ideia é que agora, com esse conhecimento, seja mais fácil construir funcionalidades mais avançadas e reaproveitar essa estrutura nos próximos vídeos.
