@@ -1,5 +1,5 @@
 dist:
-  module: github.com/joaochiroli/projeto-otel-na-pratica/extensions/myextension
+  module: github.com/dosedetelemetria/projeto-otel-na-pratica/distribution
   name: otel-na-pratica
   description: Distribuição do Collector para o projeto OpenTelemetry na Prática
   version: 0.0.1
@@ -8,6 +8,7 @@ dist:
 receivers:
   - gomod: go.opentelemetry.io/collector/receiver/nopreceiver v0.135.0
   - gomod: go.opentelemetry.io/collector/receiver/otlpreceiver v0.135.0
+  - gomod: github.com/dosedetelemetria/projeto-otel-na-pratica/receivers/myreceiver v0.0.1
 exporters:
   - gomod: go.opentelemetry.io/collector/exporter/debugexporter v0.135.0
   - gomod: go.opentelemetry.io/collector/exporter/nopexporter v0.135.0
@@ -24,3 +25,4 @@ providers:
 
 replaces:
   - github.com/dosedetelemetria/projeto-otel-na-pratica/extensions/myextension => ../../extensions/myextension
+  - github.com/dosedetelemetria/projeto-otel-na-pratica/receivers/myreceiver => ../../receivers/myreceiver

@@ -253,3 +253,18 @@ Hoje eu mostrei como criar uma extension personalizada para o OpenTelemetry Coll
 Em seguida, criei a estrutura da extensão com os arquivos essenciais: configuração, factory.go e a própria lógica da extension. Mostrei como o Collector consome essas definições através do main.go, que monta os componentes a partir do builder. Implementamos a interface obrigatória com os métodos Start e Shutdown, além de uma configuração padrão com a URL, que pode ser sobrescrita no YAML. Reforcei a importância de entender essa integração, especialmente quando o código é externo ao repositório oficial do projeto.
 
 Por fim, compilei a nova distribuição, corrigi pequenos bugs (como o uso de letras maiúsculas em campos exportados) e validei que o Collector inicializa corretamente, utilizando tanto o valor padrão da URL quanto o valor sobrescrito. Esse processo serve como base para o desenvolvimento de novos componentes e módulos. A ideia é que agora, com esse conhecimento, seja mais fácil construir funcionalidades mais avançadas e reaproveitar essa estrutura nos próximos vídeos.
+
+Depois de criado os arquivos, é necessário ir até o arquivo extension e executar: `go mod init github.com/joaochiroli/projeto-otel-na-pratica/extensions/myextension` e depois `go mod tidy`
+
+Fazer o comando `ocb --config manifest.yaml` para compilar
+
+### Receivers
+
+Na criação dos receivers a ideia é a mesma que foi implementada, o que muda é que não será usado `extension.Factory` e sim `receiver.Factory`
+no arquivo de configuração `factory.go`
+
+Neste vídeo, mostrei como criar um receiver customizado para o OpenTelemetry Collector. Partimos da estrutura já familiar do módulo de extensions, reaproveitando conceitos e formato de código. A factory do receiver retorna uma receiver.Factory e usamos o receiver.WithTraces para configurar qual função vai lidar com os traces recebidos. Essa função é essencial pois é ela que liga o receiver com o restante da pipeline via a interface Next, que representa o próximo consumidor dos dados, seja um processor ou um exporter.
+
+A implementação central do receiver inclui a estrutura do componente, o start, o shutdown e a função ConsumeTraces. Mostrei como o receiver é registrado na configuração do Collector e como, mesmo sem dados reais, podemos criar um mock que gera pacotes de telemetria a cada segundo usando ticker. Isso permite simular o comportamento de um receiver real, que normalmente escutaria uma porta de rede ou buscaria dados de algum sistema.
+
+No trecho mais prático, implementamos um loop que cria rastros periodicamente e os envia via next.ConsumeTraces, validando a estrutura gerada tanto no log do próprio receiver quanto no debug exporter. Essa simulação comprova que nosso receiver está funcional e integrado corretamente na pipeline do Collector. Toda a lógica pode ser adaptada posteriormente para refletir fontes reais de dados observáveis.
