@@ -258,6 +258,8 @@ Depois de criado os arquivos, é necessário ir até o arquivo extension e execu
 
 Fazer o comando `ocb --config manifest.yaml` para compilar
 
+Para testar podemos `./dist/otel-na-pratica --config otel.yaml`
+
 ### Receivers
 
 Na criação dos receivers a ideia é a mesma que foi implementada, o que muda é que não será usado `extension.Factory` e sim `receiver.Factory`
