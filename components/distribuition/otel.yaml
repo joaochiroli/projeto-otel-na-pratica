@@ -1,19 +1,14 @@
 extensions:
   myextension:
-
+  
 receivers:
   myreceiver:
-  otlp:
-    protocols:
-      grpc:
-      http:
 
 processors:
   myprocessor:
 
 exporters:
-  debug:
-    verbosity: detailed
+  myexporter:
 
 service:
   extensions: [myextension]
@@ -21,4 +16,4 @@ service:
     traces:
       receivers: [myreceiver]
       processors: [myprocessor]
-      exporters: [debug]
+      exporters: [myexporter]
