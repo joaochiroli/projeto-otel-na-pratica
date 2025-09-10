@@ -270,3 +270,21 @@ Neste vídeo, mostrei como criar um receiver customizado para o OpenTelemetry Co
 A implementação central do receiver inclui a estrutura do componente, o start, o shutdown e a função ConsumeTraces. Mostrei como o receiver é registrado na configuração do Collector e como, mesmo sem dados reais, podemos criar um mock que gera pacotes de telemetria a cada segundo usando ticker. Isso permite simular o comportamento de um receiver real, que normalmente escutaria uma porta de rede ou buscaria dados de algum sistema.
 
 No trecho mais prático, implementamos um loop que cria rastros periodicamente e os envia via next.ConsumeTraces, validando a estrutura gerada tanto no log do próprio receiver quanto no debug exporter. Essa simulação comprova que nosso receiver está funcional e integrado corretamente na pipeline do Collector. Toda a lógica pode ser adaptada posteriormente para refletir fontes reais de dados observáveis.
+
+### Processor
+
+Neste módulo, aprofundei o papel do processor no OpenTelemetry Collector. Ele atua entre o receiver e o exporter, podendo modificar os dados que trafegam na pipeline. Quando não altera os dados, é importante deixar isso claro para o Collector, permitindo paralelização segura no futuro. Esse cuidado é essencial especialmente quando manipulamos dados sensíveis, como PII. Ressaltei também que este conteúdo se apoia nos vídeos anteriores sobre receiver e extension, e recomendo fortemente assisti-los primeiro para melhor entendimento.
+
+Na parte prática, mostrei como configurar um novo processador, criando o componente na pasta processors/myprocessor e adicionando no manifesto. Utilizei a função createTraces para inicializar o processor e definimos capacidades com Capabilities, que indicam se há ou não alteração dos dados. Implementamos a interface ConsumerTraces, onde a lógica de negócio é concentrada na função ConsumeTraces. Essa função é o coração do processador, manipulando os rastros recebidos e repassando-os ao próximo componente.
+
+No final, simulei a adição de atributos a um span para demonstrar como o processador pode enriquecer os rastros. Fizemos isso criando novos spans e adicionando atributos como "MyProcessor passou por aqui". Essa manipulação deixou claro o fluxo entre receiver e processor, demonstrando como os dados são criados e modificados ao longo da pipeline. Isso fecha um ciclo didático prático sobre criação e uso de processors no OpenTelemetry.
+
+### Exporter
+
+Nesta aula, eu explorei o funcionamento do componente exporter dentro do pipeline do OpenTelemetry. Diferente dos receivers e processors, o exporter é o estágio final da cadeia e não possui um next para onde passar os dados. Ele é responsável por consumir os dados e exportá-los para fora do sistema — seja via HTTP, RPC ou outros meios. Com isso, a estrutura muda levemente, embora ainda siga a interface Consumer.
+
+Implementei um exemplo funcional do myExporter, onde mostramos como configurar e estruturar o componente, definindo suas funções como start, shutdown, capabilities e consumeTraces. No consumeTraces, modifiquei os spans adicionando um atributo customizado para mostrar que os dados passaram por ali. Como não há um destino real configurado nesse exemplo, utilizei logs para confirmar o funcionamento.
+
+Por fim, construímos e executamos a distribuição para validar o pipeline completo — incluindo nosso novo exporter. No log, conseguimos verificar que os dados realmente chegaram ao exporter, reforçando que essa etapa está pronta para implementar lógicas mais específicas, como persistência externa ou análises. Essa foi uma etapa fundamental para fechar o ciclo de coleta e exportação de telemetria.
+
+### Connector
