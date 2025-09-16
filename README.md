@@ -467,4 +467,8 @@ Também abordo como essa arquitetura pode evoluir para incluir múltiplas camada
 
 Para ambientes com múltiplos clusters, apresento dois modelos arquiteturais: o descentralizado, onde cada cluster mantém sua própria stack de observabilidade; e o centralizado, no qual os dados são processados localmente antes de serem enviados para um cluster observabilidade único. Também discuto estratégias de retenção de dados, como manter spans brutos por um curto período para depuração imediata e armazenar dados amostrados de alto valor por mais tempo. Essa abordagem garante escalabilidade, controle de custo e visibilidade de ponta a ponta.
 
+![alt text]({907D58F5-CE76-4EA3-8645-89684246B4BF}.png)
+
 ![alt text]({6F429D47-28FF-4B95-92A1-8587E3AC0CEB}.png)
+
+![alt text]({72233B5B-5E33-4025-A2FA-DE5E61372927}.png)
