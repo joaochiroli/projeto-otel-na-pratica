@@ -428,4 +428,4 @@ Demonstrei a arquitetura completa com exemplos práticos, partindo de workloads 
 
 Também fiz uma análise crítica sobre os desafios práticos. Embora o Target Allocator funcione bem para cenários padrão ("arroz com feijão"), sua documentação é limitada e ele não é tão bem mantido atualmente. Casos mais avançados ou configurações fora do comum podem exigir leitura de código e contribuição ativa na comunidade. Ainda assim, para ambientes com grande volume de métricas Prometheus dentro do Kubernetes, ele continua sendo uma solução válida e eficiente.
 
-![alt text]({416B9ED8-393E-480F-9DAE-8C60F2FC9E1C}.png)
+![alt text]({986F7778-E075-4AB0-B432-937DD53F4B43}.png)
