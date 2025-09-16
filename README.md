@@ -394,3 +394,14 @@ spec:
 ```
 
 ### Modos de operação dos Collectors
+
+Nós temos 4 modos de operação do Collector no Kubernetes:
+
+- Deployment: você deve usar deployment quando você quer um escalonamento horizontal dos seus collectors, você não quer que os collectors fiquem limitados a quantidade de nodes.
+- DaemonSet: você quer que exista um collector por node.
+- StatefulSet: ele gera nomes previsiveis pros pods. Não é muito utilizado este modo.
+- Sidecar: cada aplicação tem seu próprio collector.
+
+Exemplo da arquitetura de um Sidecar:
+
+![alt text]({00D644E3-3D02-43A2-9FB3-D17CC6A62FCD}.png)
