@@ -405,3 +405,5 @@ Nós temos 4 modos de operação do Collector no Kubernetes:
 Exemplo da arquitetura de um Sidecar:
 
 ![alt text]({00D644E3-3D02-43A2-9FB3-D17CC6A62FCD}.png)
+
+Se quiser executar basta fazer: `kubectl apply -f sidecar-workload.yaml`
