@@ -1,0 +1,30 @@
+apiVersion: opentelemetry.io/v1beta1
+kind: OpenTelemetryCollector
+metadata:
+  name: otelcol-to-lgtm
+spec:
+  image: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib:0.124.1
+  mode: sidecar
+  config:
+    receivers:
+      otlp:
+        protocols:
+          grpc: {}
+    exporters:
+      otlphttp:
+        endpoint: http://lgtm.lgtm.svc.cluster.local:4318
+
+    service:
+      pipelines:
+        traces:
+          receivers:  [ otlp ]
+          processors: [  ]
+          exporters:  [ otlphttp ]
+        logs:
+          receivers:  [ otlp ]
+          processors: [  ]
+          exporters:  [ otlphttp ]
+        metrics:
+          receivers:  [ otlp ]
+          processors: [  ]
+          exporters:  [ otlphttp ]

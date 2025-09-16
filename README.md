@@ -288,3 +288,109 @@ Implementei um exemplo funcional do myExporter, onde mostramos como configurar e
 Por fim, construímos e executamos a distribuição para validar o pipeline completo — incluindo nosso novo exporter. No log, conseguimos verificar que os dados realmente chegaram ao exporter, reforçando que essa etapa está pronta para implementar lógicas mais específicas, como persistência externa ou análises. Essa foi uma etapa fundamental para fechar o ciclo de coleta e exportação de telemetria.
 
 ### Connector
+
+# Operator
+
+Neste vídeo, mostrei o que são operadores no contexto do Kubernetes, destacando que, na prática, eles são apenas deployments comuns, executando em algum namespace do cluster, mas com permissões específicas para interagir com a API do Kubernetes. O objetivo de um operador é automatizar tarefas operacionais sobre recursos personalizados — como criar, atualizar ou garantir o estado desejado de um software dentro do cluster.
+
+Apresentei o funcionamento básico de um operador: ele se registra no API Server e inicia o processo de reconciliação. Isso significa que, ao identificar alterações ou eventos em recursos que ele observa (como CRs), ele compara o estado atual com o estado desejado descrito na CR e realiza as ações necessárias para manter essa consistência. Expliquei que alterações manuais nos objetos gerenciados pelo operador tendem a ser sobrescritas durante esse processo de reconciliação.
+
+No exemplo do OpenTelemetry Operator, mostrei como, a partir de um CR (por exemplo, um Collector), o operador cria automaticamente os objetos necessários: ConfigMap, Deployment, ServiceAccount, entre outros. Todo esse processo é transparente para o usuário final. Bastou definir o YAML com as configurações desejadas e aplicar no cluster; o operador cuidou do resto. Esse padrão se repete em qualquer operador Kubernetes, tornando esse conhecimento reutilizável em outros cenários.
+
+![alt text]({EC10538D-5C01-45D9-916C-90C365827552}.png)
+
+### Instalação
+
+Neste vídeo, mostrei como realizar a instalação do OpenTelemetry Operator em um cluster Kubernetes. Usei um ambiente local com K3D, mas as instruções funcionam da mesma forma em ambientes como Minikube, GKE, AKS e outros. A única exceção mencionada foi o OpenShift, que conta com o Operator Hub, permitindo instalar o operador diretamente por uma interface gráfica, seja na versão da Red Hat ou na versão comunitária.
+
+Na instalação manual, utilizei o repositório oficial do projeto, aplicando os manifests YAML para instalar o Operator e suas dependências. Embora o uso do Cert Manager seja opcional, adicionei ele para facilitar a criação e o gerenciamento de certificados usados pelos webhooks. Mostrei passo a passo como aplicar os arquivos, acompanhar o status dos deployments e verificar a criação de CRDs, roles, webhooks e service accounts no cluster.
+
+Após a instalação, validei o funcionamento criando uma CR do tipo OpenTelemetryCollector. Com ela, o operador provisionou automaticamente os objetos necessários, como ConfigMap e Deployment, e completou a configuração com padrões adequados ao ambiente Kubernetes — como o uso de 0.0.0.0 no receiver em vez do 127.0.0.1 padrão. Esse ajuste garante que o Collector esteja acessível dentro do cluster. Encerramos com o Operator pronto para receber outras CRs e gerenciar a observabilidade de forma declarativa.
+
+Usando um Operator você coloca tudo que você quiser em um só arquivo no Operator. Como instalar:
+
+- Instalar Cert-Manager: `kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.18.2/cert-manager.yaml`
+- Instalar Operator: `kubectl apply -f https://github.com/open-telemetry/opentelemetry-operator/releases/latest/download/opentelemetry-operator.yaml`
+- Dar o Apply no Collector: `kubectl apply -f otelcol-cr.yaml`. otelcol-cr.yaml:
+
+  ```
+  apiVersion: opentelemetry.io/v1beta1
+  kind: OpenTelemetryCollector
+  metadata:
+    name: otelcol-to-lgtm
+  spec:
+    image: ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib:0.124.1
+    mode: sidecar
+    config:
+      receivers:
+        otlp:
+          protocols:
+            grpc: {}
+      exporters:
+        otlphttp:
+          endpoint: http://lgtm.lgtm.svc.cluster.local:4318
+
+      service:
+        pipelines:
+          traces:
+            receivers:  [ otlp ]
+            processors: [  ]
+            exporters:  [ otlphttp ]
+          logs:
+            receivers:  [ otlp ]
+            processors: [  ]
+            exporters:  [ otlphttp ]
+          metrics:
+            receivers:  [ otlp ]
+            processors: [  ]
+            exporters:  [ otlphttp ]
+  ```
+
+### CRD
+
+CRD seria a classe enquando CR seria o Objeto, se estivessemos falandod e JAVA.
+
+CRD (Custom Resource Definition)
+
+É a definição ou esquema de um novo tipo de recurso personalizado
+Define a estrutura, campos, validações e comportamentos que o recurso customizado deve ter
+É como um "molde" ou "template" que especifica como o recurso deve ser criado
+No contexto do OpenTelemetry Operator, os CRDs definem recursos como OpenTelemetryCollector, Instrumentation, etc.
+
+CR (Custom Resource)
+
+É uma instância específica criada a partir de um CRD
+É o recurso real em execução no cluster
+Contém os valores e configurações específicas para aquela implementação particular
+
+CRD - Define o tipo de recurso:
+
+```
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: opentelemetrycollectors.opentelemetry.io
+spec:
+  group: opentelemetry.io
+  versions:
+  - name: v1alpha1
+    # Define campos como spec, status, etc.
+```
+
+CR - Instância real do coletor:
+
+```
+apiVersion: opentelemetry.io/v1alpha1
+kind: OpenTelemetryCollector
+metadata:
+  name: my-collector
+spec:
+  config: |
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+```
+
+### Modos de operação dos Collectors
