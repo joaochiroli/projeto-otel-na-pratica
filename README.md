@@ -427,3 +427,5 @@ Neste vídeo, mostrei como funciona o Target Allocator e em quais cenários ele 
 Demonstrei a arquitetura completa com exemplos práticos, partindo de workloads com centenas ou milhares de réplicas instrumentadas, passando pela configuração de Service Monitors, até a instalação do Target Allocator e dos Collectors. Mostrei que, ao habilitarmos o targetAllocator em uma CR de Collector, ele assume o papel de Service Discovery e atribui alvos dinamicamente para cada instância. Isso garante que nenhum Collector fique sobrecarregado e que a distribuição seja consistente e automática com base em hashing.
 
 Também fiz uma análise crítica sobre os desafios práticos. Embora o Target Allocator funcione bem para cenários padrão ("arroz com feijão"), sua documentação é limitada e ele não é tão bem mantido atualmente. Casos mais avançados ou configurações fora do comum podem exigir leitura de código e contribuição ativa na comunidade. Ainda assim, para ambientes com grande volume de métricas Prometheus dentro do Kubernetes, ele continua sendo uma solução válida e eficiente.
+
+![alt text]({416B9ED8-393E-480F-9DAE-8C60F2FC9E1C}.png)
