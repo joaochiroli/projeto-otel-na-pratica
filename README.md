@@ -407,3 +407,13 @@ Exemplo da arquitetura de um Sidecar:
 ![alt text]({00D644E3-3D02-43A2-9FB3-D17CC6A62FCD}.png)
 
 Se quiser executar basta fazer: `kubectl apply -f sidecar-workload.yaml`
+
+### Auto instrumentação
+
+Neste vídeo, apresentei como funciona a CRD de auto-instrumentação do OpenTelemetry Operator e como ela se integra ao Kubernetes. Ao definir uma Custom Resource (CR) de Instrumentation, é possível configurar a auto-instrumentação de workloads com base em anotações no pod template. Usei o exemplo do Keycloak para mostrar esse processo. A lógica envolve um initContainer que copia o agent.jar para um volume compartilhado no pod e configura automaticamente a variável de ambiente necessária para que a JVM carregue esse agente na inicialização.
+
+Mostrei como a anotação nos pods ativa a auto-instrumentação. O Operator intercepta o processo de criação dos pods com um mutating webhook, insere o initContainer no pod e garante que o agente seja referenciado pela variável JAVA_TOOL_OPTIONS. Com isso, o agente é carregado sem necessidade de alterar a imagem da aplicação. Esse mecanismo é robusto e permite aplicar a instrumentação em diversos serviços, mantendo o processo simples e reutilizável.
+
+Por fim, validei o funcionamento observando a instalação do Collector, do LGTM e do próprio Keycloak. Verifiquei os pods, volumes e variáveis de ambiente, garantindo que os rastros estavam sendo enviados corretamente para o backend configurado. Após ajustes no namespace, confirmei que os dados começaram a aparecer no painel. Todo o processo foi concluído com sucesso, provando que a auto-instrumentação estava funcionando como esperado.
+
+![alt text]({1F7D2438-C94A-4444-BF7A-B070B0D1FD8E}.png)

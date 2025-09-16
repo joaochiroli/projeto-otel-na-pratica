@@ -1,0 +1,13 @@
+---
+apiVersion: opentelemetry.io/v1alpha1
+kind: Instrumentation
+metadata:
+  name: my-java
+spec:
+  env:
+  - name: OTEL_TRACES_EXPORTER
+    value: otlp
+  - name: OTEL_EXPORTER_OTLP_ENDPOINT
+    value: http://auto-instrumentation-collector-headless.auto-instrumentation.svc.cluster.local:4317
+  exporter:
+    endpoint: http://auto-instrumentation-collector-headless.auto-instrumentation.svc.cluster.local:4317
