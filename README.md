@@ -417,3 +417,13 @@ Mostrei como a anotação nos pods ativa a auto-instrumentação. O Operator int
 Por fim, validei o funcionamento observando a instalação do Collector, do LGTM e do próprio Keycloak. Verifiquei os pods, volumes e variáveis de ambiente, garantindo que os rastros estavam sendo enviados corretamente para o backend configurado. Após ajustes no namespace, confirmei que os dados começaram a aparecer no painel. Todo o processo foi concluído com sucesso, provando que a auto-instrumentação estava funcionando como esperado.
 
 ![alt text]({1F7D2438-C94A-4444-BF7A-B070B0D1FD8E}.png)
+
+![alt text]({8FDD95D1-37D1-44D2-B182-69711E79A586}.png)
+
+### Target Allocator - Usado com Prometheus
+
+Neste vídeo, mostrei como funciona o Target Allocator e em quais cenários ele realmente se aplica. Ele resolve um problema específico: quando temos milhares ou dezenas de milhares de endpoints Prometheus expostos no Kubernetes e o Prometheus tradicional começa a atingir seus limites de escalabilidade. Em situações como essa, é preciso distribuir a responsabilidade de raspagem entre múltiplas instâncias de Collector, e é aí que o Target Allocator entra como solução de balanceamento automático dos alvos.
+
+Demonstrei a arquitetura completa com exemplos práticos, partindo de workloads com centenas ou milhares de réplicas instrumentadas, passando pela configuração de Service Monitors, até a instalação do Target Allocator e dos Collectors. Mostrei que, ao habilitarmos o targetAllocator em uma CR de Collector, ele assume o papel de Service Discovery e atribui alvos dinamicamente para cada instância. Isso garante que nenhum Collector fique sobrecarregado e que a distribuição seja consistente e automática com base em hashing.
+
+Também fiz uma análise crítica sobre os desafios práticos. Embora o Target Allocator funcione bem para cenários padrão ("arroz com feijão"), sua documentação é limitada e ele não é tão bem mantido atualmente. Casos mais avançados ou configurações fora do comum podem exigir leitura de código e contribuição ativa na comunidade. Ainda assim, para ambientes com grande volume de métricas Prometheus dentro do Kubernetes, ele continua sendo uma solução válida e eficiente.
