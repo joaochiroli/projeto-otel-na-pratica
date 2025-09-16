@@ -429,3 +429,20 @@ Demonstrei a arquitetura completa com exemplos práticos, partindo de workloads 
 Também fiz uma análise crítica sobre os desafios práticos. Embora o Target Allocator funcione bem para cenários padrão ("arroz com feijão"), sua documentação é limitada e ele não é tão bem mantido atualmente. Casos mais avançados ou configurações fora do comum podem exigir leitura de código e contribuição ativa na comunidade. Ainda assim, para ambientes com grande volume de métricas Prometheus dentro do Kubernetes, ele continua sendo uma solução válida e eficiente.
 
 ![alt text]({986F7778-E075-4AB0-B432-937DD53F4B43}.png)
+
+# OpAMP
+
+Pause
+Mute
+Remaining Time
+
+- 22:29
+  Captions
+  1x
+  Playback Rate
+  Fullscreen
+  Este módulo apresenta o OpAMP (Open Agent Management Protocol), um protocolo aberto criado dentro do projeto OpenTelemetry para permitir que um servidor central gerencie remotamente uma frota de agentes, como os OpenTelemetry Collectors. A comunicação é definida por uma especificação baseada em Protobuf, que estabelece as mensagens trocadas entre o agente e o servidor. Apesar de a especificação já ser considerada estável, é importante notar que o ecossistema OpAMP ainda está em desenvolvimento e, no momento, não existe uma implementação de servidor que seja totalmente de código aberto e neutra de fornecedor, o que limita seu uso em produção sem recorrer a soluções comerciais.
+
+A arquitetura típica do OpAMP envolve três componentes principais: o Servidor, que é a central de gerenciamento; o Agente, que é o Collector a ser gerenciado; e um Supervisor, que atua como intermediário. Como o Collector não foi projetado para recarregar configurações dinamicamente ("hot reload"), o Supervisor recebe os comandos do Servidor e é responsável por parar o Collector, aplicar a nova configuração e reiniciá-lo. Em ambientes Kubernetes, o OpenTelemetry Operator pode funcionar como esse Supervisor através de um componente "ponte" (bridge), traduzindo os comandos do OpAMP em alterações nos recursos do Kubernetes, como os ConfigMaps e as definições dos Collectors.
+
+O protocolo OpAMP define diversas capacidades, como a habilidade de um agente reportar seu estado de saúde, sua configuração e os componentes que possui, além da capacidade de o servidor enviar novas configurações ou até mesmo pacotes de atualização para o binário do agente. Essa capacidade de atualização remota dos binários gera uma discussão sobre a melhor abordagem de deployment, contrastando um modelo de agentes autônomos com a filosofia GitOps, onde a preferência é por infraestrutura imutável e rollouts controlados. A abordagem GitOps, que cria novas instâncias com as alterações em vez de modificar as existentes, é apresentada como uma prática mais segura e previsível para gerenciar as configurações dos Collector
