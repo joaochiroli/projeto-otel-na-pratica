@@ -170,6 +170,10 @@ Você possui funções editoras e conversoras.
 
 ![alt text]({1FC800CE-9684-4423-A567-9242235DC82B}.png)
 
+Nessa aula eu vou te mostrar um dos conceitos fundamentais para você dominar a OTTL de vez: os contextos. Tudo o que a gente faz na OTTL depende de entender em qual contexto estamos trabalhando. Eu vou te explicar os quatro principais que você vai encontrar no seu dia a dia — resource, span, log e metric — e porque eles são a base de qualquer transformação que você for escrever.
+
+Vou te mostrar na prática que cada contexto te dá acesso a um conjunto diferente de informações. Por exemplo, o campo span.duration só faz sentido e só existe dentro do contexto de um span, assim como o log.body é algo específico do contexto de log. Entender essa estrutura é o que vai te permitir acessar o dado certo no lugar certo. Eu vou desenhar essa estrutura pra gente e mostrar quais campos pertencem a cada contexto.
+
 ### Técnicas de Resiliência (É possivel fazer um armazenamento de fila em Disco)
 
 Nesse módulo, eu aprofundei como podemos nos proteger contra falhas no collector agent, especificamente quando ele sai do ar. Comecei retomando o diagrama de arquitetura e relembrando a proteção já discutida em casos de falhas na comunicação entre o agent e o gateway. O foco, porém, foi mostrar o que acontece quando o agent propriamente dito falha — enquanto nosso serviço continua emitindo dados de telemetria. A principal preocupação aqui é evitar a perda de dados que estão em memória no momento da queda.
