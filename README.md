@@ -491,3 +491,11 @@ Se atentar com:
 - Dependendo do volume de dados gerenciar os Collectors pode ser um desafio ao longo prazo
 - Problemas com a instrumentação da aplicação
 - Migração leva de 6 a 12 meses
+
+ANTES
+
+![alt text]({F8E14CFC-15F8-4D35-8C8D-9DEA36A54F7B}.png)
+
+DEPOIS
+
+![alt text]({76598C66-6FD7-4556-950E-C94B19925FA4}.png)
