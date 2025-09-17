@@ -483,9 +483,11 @@ Para garantir o sucesso, a abordagem recomendada é dividir o problema complexo 
 
 Se atentar com:
 
-- Analisar os motivos e quais são seus objetivos ao migrar para OTLP
+- Analisar os motivos e quais são seus objetivos ao migrar para OTLP, por que seria importante usar o OTLP ?
 - Passagem de conhecimento entre as equipes ou realizar treinamentos
 - Instrumentar a aplicação para enviar os dados para dois locais diferentes em um primeiro momento
 - Dados que estão sendo usadas
 - Verificar qual o backend que será utilizado para receber os dados
 - Dependendo do volume de dados gerenciar os Collectors pode ser um desafio ao longo prazo
+- Problemas com a instrumentação da aplicação
+- Migração leva de 6 a 12 meses
