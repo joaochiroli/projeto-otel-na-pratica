@@ -472,3 +472,20 @@ Para ambientes com múltiplos clusters, apresento dois modelos arquiteturais: o 
 ![alt text]({6F429D47-28FF-4B95-92A1-8587E3AC0CEB}.png)
 
 ![alt text]({72233B5B-5E33-4025-A2FA-DE5E61372927}.png)
+
+# Migração
+
+A transição para o OpenTelemetry é um passo estratégico que exige um planejamento cuidadoso, indo além de uma simples troca de ferramentas. O ponto de partida para qualquer migração bem-sucedida é a definição clara dos objetivos, seja para obter independência de fornecedores, otimizar custos ou padronizar a observabilidade em toda a organização. Entender o "porquê" da migração é fundamental para alinhar as equipes e justificar o investimento de tempo e recursos, garantindo que o esforço esteja direcionado para a solução de problemas concretos e a geração de valor para o negócio.
+
+O processo de migração apresenta desafios significativos que precisam ser gerenciados. Entre eles, destacam-se a complexidade de alterar sistemas em produção sem causar interrupções, a necessidade de capacitar as equipes com novas ferramentas e conceitos, e a gestão de diferentes formatos e semânticas de dados entre o sistema legado e o novo padrão OpenTelemetry. A arquitetura do OpenTelemetry, especialmente o uso do Collector, desempenha um papel central ao atuar como um intermediário que recebe, processa e distribui dados de telemetria para múltiplos destinos, permitindo uma transição controlada e gradual.
+
+Para garantir o sucesso, a abordagem recomendada é dividir o problema complexo em partes menores e gerenciáveis. A estratégia consiste em iniciar a migração com um único serviço ou um conjunto limitado de aplicações, utilizando essa experiência inicial como um projeto piloto para aprender, documentar os desafios e validar a nova arquitetura. Esse método iterativo permite que a equipe ganhe confiança e conhecimento, crie automações e desenvolva um plano de ação replicável para os demais serviços, assegurando uma migração mais segura e eficiente em larga escala.
+
+Se atentar com:
+
+- Analisar os motivos e quais são seus objetivos ao migrar para OTLP
+- Passagem de conhecimento entre as equipes ou realizar treinamentos
+- Instrumentar a aplicação para enviar os dados para dois locais diferentes em um primeiro momento
+- Dados que estão sendo usadas
+- Verificar qual o backend que será utilizado para receber os dados
+- Dependendo do volume de dados gerenciar os Collectors pode ser um desafio ao longo prazo
