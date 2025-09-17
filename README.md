@@ -156,6 +156,20 @@ Caso você queira criar vários rastros é possivel digitar `telemetrygen traces
 
 ![alt text]({4231D92F-347A-4AF6-83EA-CE465920A8A4}.png)
 
+### OTTL
+
+Nesta aula, aprofundamos na OTTL (OpenTelemetry Transformation Language). Apresentamos a OTTL como uma DSL (Domain-Specific Language) poderosa, projetada para operar exclusivamente dentro do Collector do OpenTelemetry. Seu principal objetivo é permitir a manipulação e transformação de dados de telemetria — traces, métricas e logs — em tempo real, à medida que passam pela sua pipeline, garantindo que cheguem ao destino final no formato e com o conteúdo desejado.
+
+Analisamos a estrutura fundamental de uma declaração OTTL, que combina funções com condicionais. Distinguimos os dois tipos de funções: as Editoras (set, delete_key), que modificam os dados diretamente no local, e as Conversoras (ToUpper), que recebem um valor, o transformam e retornam um novo resultado. Explicamos como usar "paths" para acessar atributos específicos e a cláusula where para aplicar lógica condicional, controlando com precisão quando uma transformação deve ocorrer.
+
+Através de exemplos práticos, demonstramos o poder da OTTL para resolver problemas do mundo real. Vimos como normalizar dados, convertendo o método HTTP para maiúsculas em um trace, e como garantir a segurança removendo um campo de senha de um registro de log. Concluímos que dominar a OTTL é essencial para quem gerencia pipelines de telemetria, oferecendo um controle granular para limpar, enriquecer e proteger seus dados.
+
+Você possui funções editoras e conversoras.
+
+![alt text]({C33A8F2C-1761-4A8F-8151-BEA4E594DD05}.png)
+
+![alt text]({1FC800CE-9684-4423-A567-9242235DC82B}.png)
+
 ### Técnicas de Resiliência (É possivel fazer um armazenamento de fila em Disco)
 
 Nesse módulo, eu aprofundei como podemos nos proteger contra falhas no collector agent, especificamente quando ele sai do ar. Comecei retomando o diagrama de arquitetura e relembrando a proteção já discutida em casos de falhas na comunicação entre o agent e o gateway. O foco, porém, foi mostrar o que acontece quando o agent propriamente dito falha — enquanto nosso serviço continua emitindo dados de telemetria. A principal preocupação aqui é evitar a perda de dados que estão em memória no momento da queda.
