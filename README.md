@@ -174,6 +174,10 @@ Nessa aula eu vou te mostrar um dos conceitos fundamentais para você dominar a 
 
 Vou te mostrar na prática que cada contexto te dá acesso a um conjunto diferente de informações. Por exemplo, o campo span.duration só faz sentido e só existe dentro do contexto de um span, assim como o log.body é algo específico do contexto de log. Entender essa estrutura é o que vai te permitir acessar o dado certo no lugar certo. Eu vou desenhar essa estrutura pra gente e mostrar quais campos pertencem a cada contexto.
 
+![alt text]({3354EE62-481F-46F1-82A1-AB4CD5BB1546}.png)
+
+![alt text]({47C417C8-10CA-45D7-B5F8-B07F6A661395}.png)
+
 ### Técnicas de Resiliência (É possivel fazer um armazenamento de fila em Disco)
 
 Nesse módulo, eu aprofundei como podemos nos proteger contra falhas no collector agent, especificamente quando ele sai do ar. Comecei retomando o diagrama de arquitetura e relembrando a proteção já discutida em casos de falhas na comunicação entre o agent e o gateway. O foco, porém, foi mostrar o que acontece quando o agent propriamente dito falha — enquanto nosso serviço continua emitindo dados de telemetria. A principal preocupação aqui é evitar a perda de dados que estão em memória no momento da queda.
