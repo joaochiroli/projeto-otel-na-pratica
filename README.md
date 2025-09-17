@@ -499,3 +499,11 @@ ANTES
 DEPOIS
 
 ![alt text]({76598C66-6FD7-4556-950E-C94B19925FA4}.png)
+
+# Cultura de Observabilidade
+
+A implementação bem-sucedida de uma cultura de observabilidade depende de uma equipe central, frequentemente chamada de Engenharia de Observabilidade. Embora nem toda empresa tenha uma equipe com este nome, a responsabilidade recai sobre profissionais que possuem um conhecimento híbrido de engenharia de software, operações e SRE. Estes especialistas dominam ferramentas como OpenTelemetry e Prometheus e são responsáveis por arquitetar a pipeline de telemetria, escolher as soluções de observabilidade e, crucialmente, educar a organização. Para ter sucesso, essa equipe precisa não apenas de conhecimento técnico, mas também de habilidades sociais para criar conteúdo e disseminar o conhecimento pela empresa.
+
+A melhor estratégia para disseminar a cultura de observabilidade é começar pequeno, quebrando o problema em partes menores. A abordagem inicial consiste em selecionar uma equipe piloto, idealmente uma que já enfrente problemas recorrentes em produção, pois é a que mais se beneficiará da observabilidade. Um engenheiro de observabilidade deve trabalhar lado a lado com um "campeão" dentro dessa equipe, ensinando-o a instrumentar, visualizar dados, criar alertas e usar essas informações para resolver problemas reais. O sucesso deste piloto cria um caso de estudo e transforma os membros da equipe em defensores da observabilidade, ajudando a convencer outras equipes a adotarem as mesmas práticas.
+
+Para escalar a adoção, é preciso ir além dos pilotos. Uma técnica eficaz é a realização de "Game Days", dias de jogos em que as equipes praticam a resolução de falhas em um ambiente controlado e de baixo estresse, como foi feito na Skyscanner. Outro pilar fundamental é a documentação robusta e a automação, provisionando novos serviços com um conjunto básico de dashboards e alertas automaticamente. É crucial evitar uma implementação forçada e em larga escala, pois a falta de preparo pode levar a uma instrumentação incorreta, custos elevados e à frustração das equipes, prejudicando a cultura. O caminho para o sucesso é gradual, baseado em educação, prática e na criação de sucessos internos que se propagam organicamente pela organização.
